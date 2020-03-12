@@ -93,10 +93,22 @@ public class RNOpencv3Module extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void imageReadToMat(String inPath, final Promise promise) {
+        FileUtils.getInstance().imageReadToMat(inPath, promise);
+    }
+
+    @ReactMethod
     public void matToImage(ReadableMap srcMat, String outPath, final Promise promise) {
         int matIndex = srcMat.getInt("matIndex");
         Mat mat = (Mat)MatManager.getInstance().matAtIndex(matIndex);
 		FileUtils.getInstance().matToImage(mat, outPath, promise);
+    }
+
+    @ReactMethod
+    public void matWriteToImage(ReadableMap srcMat, String outPath, final Promise promise) {
+        int matIndex = srcMat.getInt("matIndex");
+        Mat mat = (Mat)MatManager.getInstance().matAtIndex(matIndex);
+		FileUtils.getInstance().matWriteToImage(mat, outPath, promise);
     }
 
     @ReactMethod

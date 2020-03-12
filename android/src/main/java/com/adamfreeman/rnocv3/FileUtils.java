@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,6 +92,44 @@ class FileUtils {
         }
     }
 
+    public static void imageReadToMat(final String inPath, final Promise promise) {
+        try {
+            if (inPath == null || inPath.length() == 0) {
+                rejectInvalidParam(promise, inPath);
+                return;
+            }
+
+            File inFileTest = new File(inPath);
+            if(!inFileTest.exists()) {
+                rejectFileNotFound(promise, inPath);
+                return;
+            }
+            if (inFileTest.isDirectory()) {
+                rejectFileIsDirectory(promise, inPath);
+                return;
+            }
+
+            // Bitmap bitmap = BitmapFactory.decodeFile(inPath);
+            // if (bitmap == null) {
+            //     throw new IOException("Decoding error unable to decode: " + inPath);
+            // }
+            // Mat img = new Mat(bitmap.getHeight(), bitmap.getWidth(), CvType.CV_8UC4);
+            // Utils.bitmapToMat(bitmap, img);
+
+            Mat img = Imgcodecs.imread(inPath);
+            int matIndex = MatManager.getInstance().addMat(img);
+
+            WritableNativeMap result = new WritableNativeMap();
+            result.putInt("cols", img.cols());
+            result.putInt("rows", img.rows());
+            result.putInt("matIndex", matIndex);
+            promise.resolve(result);
+        }
+        catch (Exception ex) {
+            reject(promise, "EGENERIC", ex);
+        }
+    }
+
     public static void matToImage(final Mat mat, final String outPath, final Promise promise) {
         try {
             if (outPath == null || outPath.length() == 0) {
@@ -140,6 +179,32 @@ class FileUtils {
             WritableNativeMap result = new WritableNativeMap();
             result.putInt("width", width);
             result.putInt("height", height);
+            result.putString("uri", outPath);
+            promise.resolve(result);
+        }
+        catch (Exception ex) {
+            reject(promise, "EGENERIC", ex);
+        }
+    }
+
+    public static void matWriteToImage(final Mat mat, final String outPath, final Promise promise) {
+        try {
+            if (outPath == null || outPath.length() == 0) {
+                // TODO: if no path sent in then auto-generate??!!!?
+                rejectInvalidParam(promise, outPath);
+                return;
+            }
+
+            boolean isSaved = Imgcodecs.imwrite(outPath, mat);
+
+            if (!isSaved) {
+                rejectFileNotFound(promise, outPath);
+                return;
+            }
+
+            WritableNativeMap result = new WritableNativeMap();
+            result.putInt("width", mat.cols());
+            result.putInt("height", mat.rows());
             result.putString("uri", outPath);
             promise.resolve(result);
         }
