@@ -62,7 +62,8 @@ export abstract class RNCv {
     pt1: CvPoint,
     pt2: CvPoint,
     scalarVal: CvScalar,
-    thickness: typeof Imgproc
+    thickness: number,
+    lineType: number,
   ): void;
 
   public static cvtColor(

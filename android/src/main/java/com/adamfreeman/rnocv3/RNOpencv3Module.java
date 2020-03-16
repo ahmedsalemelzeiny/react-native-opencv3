@@ -61,7 +61,7 @@ public class RNOpencv3Module extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void drawLine(ReadableMap inMat, ReadableMap pt1, ReadableMap pt2, ReadableMap scalarVal, int thickness) {
+    public void drawLine(ReadableMap inMat, ReadableMap pt1, ReadableMap pt2, ReadableMap scalarVal, int thickness, int lineType) {
         int matIndex = inMat.getInt("matIndex");
         Mat testMat = (Mat)MatManager.getInstance().matAtIndex(matIndex);
         double x1 = pt1.getDouble("x");
@@ -70,8 +70,14 @@ public class RNOpencv3Module extends ReactContextBaseJavaModule {
         double y2 = pt2.getDouble("y");
         Point p1 = new Point(x1,y1);
         Point p2 = new Point(x2,y2);
-        Scalar dScalar = Scalar.all(255);
-        Imgproc.line(testMat,p1,p2,dScalar,thickness);
+        ReadableArray colorValues = scalarVal.getArray("vals");
+        Scalar dScalar = new Scalar(
+            colorValues.getDouble(0),
+            colorValues.getDouble(1),
+            colorValues.getDouble(2),
+            colorValues.getDouble(3)
+            );
+        Imgproc.line(testMat, p1, p2, dScalar, thickness, lineType);
         MatManager.getInstance().setMat(matIndex, testMat);
     }
 
