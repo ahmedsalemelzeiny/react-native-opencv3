@@ -1,6 +1,6 @@
 {
   "_from": "git+https://github.com/adamgf/react-native-opencv3.git",
-  "_id": "react-native-opencv3@1.1.0",
+  "_id": "react-native-opencv3@1.2.0",
   "_inBundle": false,
   "_integrity": "",
   "_location": "/react-native-opencv3",
@@ -35,12 +35,12 @@
   "main": "index.js",
   "name": "react-native-opencv3",
   "peerDependencies": {
-    "react-native": "^0.61.2",
-    "react-native-fs": "^2.16.2"
+    "react-native": "^0.64.0",
+    "react-native-fs": "^2.17.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "typings": "./index.d.ts"
 }
