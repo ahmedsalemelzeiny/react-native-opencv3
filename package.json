@@ -34,10 +34,6 @@
   "license": "BSD",
   "main": "index.js",
   "name": "react-native-opencv3",
-  "peerDependencies": {
-    "react-native": "^0.64.0",
-    "react-native-fs": "^2.17.0"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
